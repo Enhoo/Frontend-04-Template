@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ticTacToe</title>
+    <style>
+        .board {
+            width: 216px;
+            height: 216px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            background-color: #ccc;
+        }
+
+        .cell {
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .btn {
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: antiquewhite;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="board"></div>
+    <script>
+        let pattern = [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+        ],
+            piece = 1;
+
+        let ResetButton = document.createElement('div');
+        ResetButton.className = 'btn';
+        ResetButton.innerText = 'reset';
+        ResetButton.addEventListener('click', () => {
+            let Board = document.getElementsByClassName('board')[0];
+            pattern = [
+                [0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0],
+            ];
+            Board.innerHTML = '';
+            show();
+        })
+        document.body.appendChild(ResetButton);
+
+        function show() {
+            let Board = document.getElementsByClassName('board')[0];
+            Board.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    let cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.addEventListener('click', () => handleSwitch(i, j))
+                    cell.innerText = pattern[i][j] == 2 ?
+                        '⭕' :
+                        pattern[i][j] == 1 ? '❌' : '';
+                    Board.appendChild(cell);
+                }
+            }
+        }
+        function handleSwitch(i, j) {
+            if (pattern[i][j] === 0) {
+                pattern[i][j] = piece;
+                if (check()) {
+                    alert(piece == 2 ? '⭕赢' : '❌赢')
+                }
+                piece = 3 - piece; //对称
+                show();
+            }
+
+        }
+        function check(params) {
+            for (let i = 0; i < 3; i++) {
+                let winner = true;
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[i][j] !== piece) {
+                        winner = false
+                    }
+                }
+                if (winner) {
+                    return true;
+                }
+            }
+            for (let i = 0; i < 3; i++) {
+                let winner = true;
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[j][i] !== piece) {
+                        winner = false
+                    }
+                }
+                if (winner) {
+                    return true;
+                }
+            }
+            {
+                let winner = true;
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[j][j] !== piece) {
+                        return false
+                    }
+                }
+                if (winner) {
+                    return true;
+                }
+            }
+            {
+                let winner = true;
+                for (let j = 0; j < 3; i++) {
+                    if (pattern[j][j - 2] !== piece) {
+                        return false
+                    }
+                }
+                if (winner) {
+                    return true;
+                }
+            }
+        }
+        show()
+    </script>
+</body>
+
+</html>
