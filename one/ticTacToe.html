@@ -75,40 +75,103 @@
                 }
             }
         }
+
         function handleSwitch(i, j) {
             if (pattern[i][j] === 0) {
                 pattern[i][j] = piece;
-                if (check(pattern,piece)) {
+                if (check(pattern, piece)) {
                     alert(piece == 2 ? '⭕赢' : '❌赢')
                 }
                 piece = 3 - piece; //对称
                 show();
-                if(willWin(pattern,piece)){
+                console.log(bestChoice(pattern, piece));
+
+                computerMove();
+
+                if (willWin(pattern, piece)) {
                     console.log(piece == 2 ? '⭕赢' : '❌赢')
                 }
             }
-
         }
+
+        function computerMove() {
+            let choice=bestChoice(pattern,piece);
+            if(choice.point)
+                pattern[choice.point[1]][choice.point[0]]=piece;
+            if(check(pattern,piece)){
+                alert(piece == 2 ? '⭕赢' : '❌赢')
+            }
+            piece=3-piece;
+            show();
+        }
+
+        // function handleSwitch(i, j) {
+        //     if (pattern[i][j] === 0) {
+        //         pattern[i][j] = piece;
+        //         if (check(pattern, piece)) {
+        //             alert(piece == 2 ? '⭕赢' : '❌赢')
+        //         }
+        //         piece = 3 - piece; //对称
+        //         show();
+        //         console.log(bestChoice(pattern, piece));
+
+        //         if (willWin(pattern, piece)) {
+        //             console.log(piece == 2 ? '⭕赢' : '❌赢')
+        //         }
+        //     }
+        // }
 
         function clone(params) {
             return JSON.parse(JSON.stringify(params))
+            // return Object.create(pattern)
+            //javascript 继承原有
         }
 
-        function willWin(pattern,piece) {
+        function willWin(pattern, piece) {
             for (let i = 0; i < 3; i++) {
                 for (let j = 0; j < 3; j++) {
                     if (pattern[i][j])
                         continue;
-                    let tmp=clone(pattern);
-                    tmp[i][j]=piece;
-                    if(check(tmp,piece)){
-                        return true;
+                    let tmp = clone(pattern);
+                    tmp[i][j] = piece;
+                    if (check(tmp, piece)) {
+                        return [j, i];
                     }
                 }
             }
+            return null;
         }
 
-        function check(pattern,piece) {
+        function bestChoice(pattern, piece) {
+            let p;
+            if (p = willWin(pattern, piece)) {
+                return {
+                    point: p,
+                    result: 1
+                }
+            }
+            let result = -2;
+            let point = null;
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[i][j])
+                        continue;
+                    let tmp = clone(pattern);
+                    tmp[i][j] = piece;
+                    let r = bestChoice(tmp, 3 - piece).result;
+                    if (-r > result) {
+                        result = -r;
+                        point = [j, i];
+                    }
+                }
+            }
+            return {
+                point: point,
+                result: point ? result : 0
+            }
+        }
+
+        function check(pattern, piece) {
             for (let i = 0; i < 3; i++) {
                 let winner = true;
                 for (let j = 0; j < 3; j++) {
@@ -155,6 +218,7 @@
             }
         }
         show()
+        console.log(bestChoice(pattern, piece));
     </script>
 </body>
 
