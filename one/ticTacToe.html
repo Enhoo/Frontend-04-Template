@@ -78,15 +78,37 @@
         function handleSwitch(i, j) {
             if (pattern[i][j] === 0) {
                 pattern[i][j] = piece;
-                if (check()) {
+                if (check(pattern,piece)) {
                     alert(piece == 2 ? '⭕赢' : '❌赢')
                 }
                 piece = 3 - piece; //对称
                 show();
+                if(willWin(pattern,piece)){
+                    console.log(piece == 2 ? '⭕赢' : '❌赢')
+                }
             }
 
         }
-        function check(params) {
+
+        function clone(params) {
+            return JSON.parse(JSON.stringify(params))
+        }
+
+        function willWin(pattern,piece) {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[i][j])
+                        continue;
+                    let tmp=clone(pattern);
+                    tmp[i][j]=piece;
+                    if(check(tmp,piece)){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        function check(pattern,piece) {
             for (let i = 0; i < 3; i++) {
                 let winner = true;
                 for (let j = 0; j < 3; j++) {
