@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>traffic light</title>
+    <style>
+        .board {
+            width: 300px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background-color: #ccc;
+            border-radius: 100px;
+        }
+
+        .gray {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: gray;
+        }
+
+        .red {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: red;
+
+        }
+
+        .yellow {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: yellow;
+
+        }
+
+        .green {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: green;
+
+        }
+        .next{
+            width: 50px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        let Board = document.createElement('div'),
+            next = document.createElement('div'),
+            RedLight = document.createElement('div'),
+            yellowLight = document.createElement('div'),
+            greenLight = document.createElement('div');
+        next.className = 'next';
+        next.innerText='next';
+        Board.className = 'board';
+        RedLight.className = 'red';
+        yellowLight.className = 'gray';
+        greenLight.className = 'gray';
+        document.body.appendChild(Board);
+        document.body.appendChild(next);
+        Board.appendChild(RedLight);
+        Board.appendChild(yellowLight);
+        Board.appendChild(greenLight);
+
+
+        //  part 1
+        // function turnRed() {
+        //     let timer = setTimeout(() => {
+        //         RedLight.className = 'gray';
+        //         yellowLight.className = 'yellow';
+        //         turnYellow();
+        //         clearTimeout(timer);
+        //     }, 10 * 1000);
+        // }
+        // function turnYellow() {
+        //     let timer = setTimeout(() => {
+        //         yellowLight.className = 'gray';
+        //         greenLight.className = 'green';
+        //         turnGreen();
+        //         clearTimeout(timer);
+        //     }, 2 * 1000);
+        // }
+        // function turnGreen() {
+        //     let timer = setTimeout(() => {
+        //         greenLight.className = 'gray';
+        //         RedLight.className = 'red';
+        //         turnRed();
+        //         clearTimeout(timer);
+        //     }, 5 * 1000);
+        // }
+        // turnRed()
+
+        //  part 2
+        // function turnRed() {
+        //     RedLight.className = 'gray';
+        //     yellowLight.className = 'yellow';
+        // }
+        // function turnYellow() {
+        //     yellowLight.className = 'gray';
+        //     greenLight.className = 'green';
+        // }
+        // function turnGreen() {
+        //     greenLight.className = 'gray';
+        //     RedLight.className = 'red';
+        // }
+        // function turnOn() {
+        //     setTimeout(() => {
+        //         turnRed();
+        //         setTimeout(() => {
+        //             turnYellow();
+        //             setTimeout(() => {
+        //                 turnGreen();
+        //                 turnOn()
+        //             }, 5 * 1000);
+        //         }, 2 * 1000);
+        //     }, 10 * 1000);
+        // }
+        // turnOn();
+
+        //  part 3
+        // function turnRed() {
+        //     RedLight.className = 'gray';
+        //     yellowLight.className = 'yellow';
+        // }
+        // function turnYellow() {
+        //     yellowLight.className = 'gray';
+        //     greenLight.className = 'green';
+        // }
+        // function turnGreen() {
+        //     greenLight.className = 'gray';
+        //     RedLight.className = 'red';
+        // }
+        // function sleep(params) {
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout(resolve, params);
+        //     })
+        // }
+        // function turnOn() {
+        //     sleep(10 * 1000).then(() => {
+        //         turnRed();
+        //         return sleep(2 * 1000)
+        //     }).then(() => {
+        //         turnYellow();
+        //         return sleep(5 * 1000)
+
+        //     }).then(() => {
+        //         turnGreen();
+        //         turnOn()
+        //     })
+        // }
+        // turnOn();
+
+        //  part 4
+        function turnYellow() {
+            RedLight.className = 'gray';
+            yellowLight.className = 'yellow';
+        }
+        function turnGreen() {
+            yellowLight.className = 'gray';
+            greenLight.className = 'green';
+        }
+        function turnRed() {
+            greenLight.className = 'gray';
+            RedLight.className = 'red';
+        }
+        function sleep(params) {
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, params);
+            })
+
+        }
+        function actions(el, eventName) {
+            return new Promise((resolve, reject) => {
+                el.addEventListener(eventName, resolve)
+            })
+        }
+        // async function turnOn() {
+        //     while (true) {
+        //         turnRed();
+        //         await sleep(10 * 100);
+        //         turnYellow();
+        //         await sleep(2 * 100);
+        //         turnGreen();
+        //         await sleep(5 * 100);
+        //     }
+        // }
+        async function turnOn() {
+            let nextBtn=document.getElementsByClassName('next')[0]
+            while (true) {
+                turnRed();
+                await actions(nextBtn,'click');
+                turnYellow();
+                await actions(nextBtn,'click');
+                turnGreen();
+                await actions(nextBtn,'click');
+            }
+        }
+        turnOn();
+
+    </script>
+</body>
+
+</html>
