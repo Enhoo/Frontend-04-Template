@@ -92,9 +92,11 @@
             mousedown = true;
             clear = (e.which === 3)
         })
+
         document.addEventListener('mouseup', () => {
             mousedown = false;
         })
+        
         document.addEventListener('contextmenu', e => {
             e.preventDefault();
         })
