@@ -40,6 +40,9 @@
                 yield token;
                 // console.log(result);
             }
+            yield {
+                type:'EOF'
+            }
         }
         for (let token of tokenize('1024+10*25')) {
             console.log(token);
