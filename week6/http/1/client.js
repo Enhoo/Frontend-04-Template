@@ -1,6 +1,8 @@
+const net =require('net')
+
 class Request {
     constructor(options) {
-        this.methods = options.methods || 'GET';
+        this.method = options.method || 'GET';
         this.host = options.host;
         this.port = options.port || 80;
         this.path = options.path || '/';
@@ -42,4 +44,4 @@ void async function () {
     let response = await request.send()
     console.log(response);
 
-}
+}()

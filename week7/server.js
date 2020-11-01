@@ -3,7 +3,7 @@ const http = require('http');
 http.createServer((request, response) => {
     let body = [];
     request.on('error', err => {
-        console.log(err);
+        console.error(err);
     }).on('data', chunk => {
         body.push(chunk.toString())
     }).on('end', () => {
@@ -12,6 +12,7 @@ http.createServer((request, response) => {
         response.writeHead(200, { 'Content-Type': 'text/html' })
         response.end('Hello world!')
     })
+    console.log(123);
 }).listen(8088)
 
 console.log('server started!');
